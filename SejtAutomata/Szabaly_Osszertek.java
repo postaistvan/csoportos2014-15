@@ -1,3 +1,4 @@
+package SejtAutomata;
 
 public class Szabaly_Osszertek {
 
@@ -43,7 +44,13 @@ public class Szabaly_Osszertek {
 		return str;
 	}
 	
-	private void Szabaly(){
+	public int[][] getNext(int[][] v){
+		for (int i=0; i<n; i++)
+			for (int j=0; j<n; j++){
+				m[i][j] = v[i][j];
+				total[i][j]=0;
+			}
+		
 		for (int i=0; i<n; i++) {
 			for (int j=0; j<n; j++) {
 				if (m[i][j]==1) {
@@ -55,6 +62,7 @@ public class Szabaly_Osszertek {
 			}
 		}
 		szabalyAlkalmazasa();
+		return m;
 	}
 	
 	private void szabalyAlkalmazasa(){
@@ -116,7 +124,7 @@ public class Szabaly_Osszertek {
 				total[i][j] += payoff[x][0];
 	}
 	
-	private void writeTotal(){
+	public void writeTotal(){
 		for (int i=0; i<n; i++) {
 			for (int j=0; j<n; j++) 
 				System.out.print(total[i][j]+ "  ");
@@ -128,6 +136,7 @@ public class Szabaly_Osszertek {
 	/**
 	 * @param args
 	 */
+	/*
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 		int [][] matrix = { {0,1,0}, {1,0,1}, {1,1,0} }; // Példa
@@ -136,12 +145,13 @@ public class Szabaly_Osszertek {
 																		// benefit = 12, cost = 4		
 		System.out.println(szo.toString());
 		
-		szo.Szabaly();
+		szo.getNext();
 		
 		szo.writeTotal();
 		
 		System.out.println(szo.toString());
 		
 	}
+	*/
 
 }
