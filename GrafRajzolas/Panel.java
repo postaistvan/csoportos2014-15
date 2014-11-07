@@ -1,27 +1,34 @@
+package GrafRajzolas;
+
 import java.awt.Color;
 import java.awt.Graphics;
 import java.util.Random;
 
 import javax.swing.JPanel;
 
-
 public class Panel extends JPanel{
 	private static final long serialVersionUID = 1L;
 	
 	private int[][] edges;
+	private int[] colors;
 	private int n;
 	private Point[] position;
 	
-	private final int R = 7;
+	private final int R = 8;
 	private final int DIST = 5;
 	
-	public Panel(int[][] matrix) {
+	public Panel(int[][] matrix, int[] colors) {
 		n = matrix.length;
 		//n = 50;
 		this.edges = new int[n][n];
+		this.colors = new int[n];
+		
 		for(int i = 0; i < n; i++)
 			for(int j = 0; j < n; j++)
 				this.edges[i][j] = matrix[i][j];
+		
+		for(int i = 0; i < n; i++)
+			this.colors[i] = colors[i];
 		
 		position = new Point[n];
 		
@@ -60,11 +67,17 @@ public class Panel extends JPanel{
 	}
 	
 	public void paint(Graphics g) {
-		g.setColor(new Color(255, 0, 0));
+		
 		for(int i = 0; i < n; i++){
+			if(colors[i] == 0){
+				g.setColor(new Color(255, 0, 0));
+			}else{
+				g.setColor(new Color(0, 0, 255));
+			}
 			g.fillOval(position[i].getX(), position[i].getY(), R, R);
 		}
 		
+		g.setColor(new Color(0, 0, 0));
 		int x1, y1, x2, y2;
 		int offset = R/2;
 		for(int i = 0; i < n; i++)
