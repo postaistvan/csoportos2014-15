@@ -1,4 +1,4 @@
-package GrafRajzolas;
+package grafRajzolas;
 
 public class Point {
 	private int x;

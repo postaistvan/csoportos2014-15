@@ -1,5 +1,4 @@
-package Statisztikak;
-
+package statisztikak;
 import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Dimension;
@@ -10,24 +9,27 @@ import java.awt.RenderingHints;
 import java.awt.Stroke;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 import javax.swing.*;
 
 @SuppressWarnings("serial")
-public class DrawGraph extends JPanel {
+public class Statistics extends JPanel {
    private static final int MAX_SCORE = 20;
-   private static final int PREF_W = 800;
-   private static final int PREF_H = 650;
-   private static final int BORDER_GAP = 30;
-   private static final Color GRAPH_COLOR = Color.green;
-   private static final Color GRAPH_POINT_COLOR = new Color(150, 50, 50, 180);
-   private static final Stroke GRAPH_STROKE = new BasicStroke(3f);
-   private static final int GRAPH_POINT_WIDTH = 12;
-   private static final int Y_HATCH_CNT = 10;
-   private List<Integer> scores;
+   private static final int PREF_W = 600;
+   private static final int PREF_H = 200;
+   private static final int BORDER_GAP = 10;
+   private static final Color GRAPH_COLOR = Color.blue;
+   private static final Color GRAPH_POINT_COLOR = new Color(0, 0, 255, 200);
+   private static final Stroke GRAPH_STROKE = new BasicStroke(2f);
+   private static final Color GRAPH_COLOR2 = Color.red;
+   private static final Color GRAPH_POINT_COLOR2 = new Color(255, 0, 0, 200);
+   private static final Stroke GRAPH_STROKE2 = new BasicStroke(2f);
+   private static final int GRAPH_POINT_WIDTH = 9;
+   private static final int Y_HATCH_CNT = 5;
+   private List<Integer> scores, scores2;
 
-   public DrawGraph(List<Integer> scores) {
+   public Statistics(List<Integer> scores, List<Integer> scores2) {
       this.scores = scores;
+      this.scores2 = scores2;
    }
 
    @Override
@@ -46,6 +48,14 @@ public class DrawGraph extends JPanel {
          graphPoints.add(new Point(x1, y1));
       }
 
+      List<Point> graphPoints2 = new ArrayList<Point>();
+      for (int i = 0; i < scores2.size(); i++) {
+         int x1 = (int) (i * xScale + BORDER_GAP);
+         int y1 = (int) ((MAX_SCORE - scores2.get(i)) * yScale + BORDER_GAP);
+         graphPoints2.add(new Point(x1, y1));
+      }
+
+      
       // create x and y axes 
       g2.drawLine(BORDER_GAP, getHeight() - BORDER_GAP, BORDER_GAP, BORDER_GAP);
       g2.drawLine(BORDER_GAP, getHeight() - BORDER_GAP, getWidth() - BORDER_GAP, getHeight() - BORDER_GAP);
@@ -73,9 +83,9 @@ public class DrawGraph extends JPanel {
       g2.setStroke(GRAPH_STROKE);
       for (int i = 0; i < graphPoints.size() - 1; i++) {
          int x1 = graphPoints.get(i).x;
-         int y1 = graphPoints.get(i).y;
+         int y1 = graphPoints.get(i).y - BORDER_GAP;
          int x2 = graphPoints.get(i + 1).x;
-         int y2 = graphPoints.get(i + 1).y;
+         int y2 = graphPoints.get(i + 1).y - BORDER_GAP;
          g2.drawLine(x1, y1, x2, y2);         
       }
 
@@ -83,41 +93,37 @@ public class DrawGraph extends JPanel {
       g2.setColor(GRAPH_POINT_COLOR);
       for (int i = 0; i < graphPoints.size(); i++) {
          int x = graphPoints.get(i).x - GRAPH_POINT_WIDTH / 2;
-         int y = graphPoints.get(i).y - GRAPH_POINT_WIDTH / 2;;
+         int y = graphPoints.get(i).y - GRAPH_POINT_WIDTH / 2 - BORDER_GAP;
          int ovalW = GRAPH_POINT_WIDTH;
          int ovalH = GRAPH_POINT_WIDTH;
          g2.fillOval(x, y, ovalW, ovalH);
       }
+      
+      Stroke oldStroke2 = g2.getStroke();
+      g2.setColor(GRAPH_COLOR2);
+      g2.setStroke(GRAPH_STROKE2);
+      for (int i = 0; i < graphPoints2.size() - 1; i++) {
+         int x1 = graphPoints2.get(i).x;
+         int y1 = graphPoints2.get(i).y - BORDER_GAP;
+         int x2 = graphPoints2.get(i + 1).x;
+         int y2 = graphPoints2.get(i + 1).y - BORDER_GAP;
+         g2.drawLine(x1, y1, x2, y2);         
+      }
+
+      g2.setStroke(oldStroke2);      
+      g2.setColor(GRAPH_POINT_COLOR2);
+      for (int i = 0; i < graphPoints2.size(); i++) {
+         int x = graphPoints2.get(i).x - GRAPH_POINT_WIDTH / 2;
+         int y = graphPoints2.get(i).y - GRAPH_POINT_WIDTH / 2 - BORDER_GAP;
+         int ovalW = GRAPH_POINT_WIDTH;
+         int ovalH = GRAPH_POINT_WIDTH;
+         g2.fillOval(x, y, ovalW, ovalH);
+      }
+
    }
 
    @Override
    public Dimension getPreferredSize() {
       return new Dimension(PREF_W, PREF_H);
-   }
-
-   private static void createAndShowGui() {
-      List<Integer> scores = new ArrayList<Integer>();
-      Random random = new Random();
-      int maxDataPoints = 16;
-      int maxScore = 20;
-      for (int i = 0; i < maxDataPoints ; i++) {
-         scores.add(random.nextInt(maxScore));
-      }
-      DrawGraph mainPanel = new DrawGraph(scores);
-
-      JFrame frame = new JFrame("DrawGraph");
-      frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-      frame.getContentPane().add(mainPanel);
-      frame.pack();
-      frame.setLocationByPlatform(true);
-      frame.setVisible(true);
-   }
-
-   public static void main(String[] args) {
-      SwingUtilities.invokeLater(new Runnable() {
-         public void run() {
-            createAndShowGui();
-         }
-      });
    }
 }

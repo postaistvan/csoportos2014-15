@@ -1,4 +1,4 @@
-package GrafRajzolas;
+package grafRajzolas;
 
 import java.awt.Color;
 import java.awt.Graphics;

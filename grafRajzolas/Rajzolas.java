@@ -1,4 +1,4 @@
-package GrafRajzolas;
+package grafRajzolas;
 
 import javax.swing.JFrame;
 
